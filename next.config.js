@@ -11,8 +11,13 @@ const nextConfig = {
       },
       {
         protocol: 'http',
-        hostname: 'rustfs',
+        hostname: 'minio',
         port: '9000',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: '**',
         pathname: '/**',
       },
     ],

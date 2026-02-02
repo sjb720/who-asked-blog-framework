@@ -18,7 +18,8 @@ const s3Client = new S3Client({
 });
 
 const bucket = process.env.S3_BUCKET!;
-const publicUrl = process.env.S3_PUBLIC_URL!;
+// Use image proxy URL if set, otherwise fall back to direct S3 URL
+const imageBaseUrl = process.env.IMAGE_PROXY_URL || `${process.env.S3_PUBLIC_URL}/${bucket}`;
 
 let bucketChecked = false;
 
@@ -81,11 +82,19 @@ export async function uploadFile(
     })
   );
 
-  return `${publicUrl}/${bucket}/${key}`;
+  return `${imageBaseUrl}/${key}`;
 }
 
 export async function deleteFile(url: string): Promise<void> {
-  const key = url.split(`/${bucket}/`)[1];
+  // Handle both proxy URLs (/api/images/key) and direct S3 URLs
+  let key: string | undefined;
+
+  if (url.includes("/api/images/")) {
+    key = url.split("/api/images/")[1];
+  } else if (url.includes(`/${bucket}/`)) {
+    key = url.split(`/${bucket}/`)[1];
+  }
+
   if (!key) return;
 
   await s3Client.send(
