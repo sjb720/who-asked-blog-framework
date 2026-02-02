@@ -21,6 +21,9 @@ COPY . .
 # Generate Prisma client
 RUN npx prisma generate
 
+# Compile seed script for production
+RUN npx tsc prisma/seed.ts --outDir prisma --skipLibCheck --esModuleInterop --module commonjs --moduleResolution node
+
 # Build Next.js
 RUN npm run build
 
@@ -49,6 +52,7 @@ COPY --from=builder --chown=nextjs:nodejs /app/node_modules/.prisma ./node_modul
 # Copy entrypoint script and prisma CLI for migrations
 COPY --from=builder /app/node_modules/prisma ./node_modules/prisma
 COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
+COPY --from=builder /app/node_modules/bcryptjs ./node_modules/bcryptjs
 COPY --chown=nextjs:nodejs docker-entrypoint.prod.sh ./
 
 USER nextjs
