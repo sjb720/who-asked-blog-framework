@@ -22,12 +22,13 @@ export async function GET(
     }
 
     const bytes = await response.Body.transformToByteArray();
+    const buffer = Buffer.from(bytes);
 
-    return new NextResponse(bytes, {
+    return new NextResponse(buffer, {
       headers: {
         "Content-Type": response.ContentType || "application/octet-stream",
         "Cache-Control": "public, max-age=31536000, immutable",
-        "Content-Length": String(response.ContentLength || bytes.length),
+        "Content-Length": String(response.ContentLength || buffer.length),
       },
     });
   } catch (error: unknown) {
