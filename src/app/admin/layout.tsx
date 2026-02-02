@@ -34,6 +34,16 @@ export default function AdminLayout({
                 >
                   Posts
                 </Link>
+                <Link
+                  href="/admin/branding"
+                  className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
+                    pathname === "/admin/branding"
+                      ? "border-accent-primary text-text-primary"
+                      : "border-transparent text-text-muted hover:border-border-secondary hover:text-text-secondary"
+                  }`}
+                >
+                  Branding
+                </Link>
               </div>
             </div>
             <div className="flex items-center space-x-4">

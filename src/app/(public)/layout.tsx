@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { prisma } from "@/lib/db";
 
 export default async function PublicLayout({
   children,
@@ -8,6 +9,11 @@ export default async function PublicLayout({
   children: React.ReactNode;
 }) {
   const session = await getServerSession(authOptions);
+  const settings = await prisma.siteSettings.findUnique({
+    where: { id: "default" },
+  });
+
+  const siteName = settings?.siteName || "Blog";
 
   return (
     <div className="min-h-screen bg-bg-primary">
@@ -15,8 +21,17 @@ export default async function PublicLayout({
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex items-center">
-              <Link href="/" className="text-xl font-semibold text-text-primary">
-                Blog
+              <Link href="/" className="flex items-center gap-2">
+                {settings?.logoUrl && (
+                  <img
+                    src={settings.logoUrl}
+                    alt={siteName}
+                    className="h-8 w-8 object-contain"
+                  />
+                )}
+                <span className="text-xl font-semibold text-text-primary">
+                  {siteName}
+                </span>
               </Link>
             </div>
             {session && (
@@ -36,7 +51,7 @@ export default async function PublicLayout({
       <footer className="border-t border-border-primary mt-16">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <p className="text-center text-text-muted text-sm">
-            &copy; {new Date().getFullYear()} Blog. All rights reserved.
+            &copy; {new Date().getFullYear()} {siteName}. All rights reserved.
           </p>
         </div>
       </footer>

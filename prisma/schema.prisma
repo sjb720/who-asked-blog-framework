@@ -41,3 +41,15 @@ model Image {
 
   @@map("images")
 }
+
+model SiteSettings {
+  id            String   @id @default("default")
+  siteName      String   @default("Blog") @map("site_name") @db.VarChar(255)
+  logoUrl       String?  @map("logo_url") @db.VarChar(500)
+  bannerUrl     String?  @map("banner_url") @db.VarChar(500)
+  bannerTitle   String?  @map("banner_title") @db.VarChar(255)
+  bannerSubtitle String? @map("banner_subtitle") @db.VarChar(500)
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  @@map("site_settings")
+}

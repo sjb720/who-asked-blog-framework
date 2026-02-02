@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import { useSnackbar } from "notistack";
@@ -37,17 +37,21 @@ export default function PostForm({ initialData }: PostFormProps) {
   const [images, setImages] = useState<GalleryImage[]>(initialData?.images || []);
   const [saving, setSaving] = useState(false);
   const [showImageModal, setShowImageModal] = useState(false);
-  const editorRef = useRef<any>(null);
+  const [pendingImage, setPendingImage] = useState<string | null>(null);
 
   const handleImageUploadForEditor = useCallback(() => {
     setShowImageModal(true);
   }, []);
 
-  const handleEditorImageInsert = useCallback(async (url: string) => {
+  const handleEditorImageInsert = useCallback((url: string) => {
     setShowImageModal(false);
-    if (url && editorRef.current) {
-      editorRef.current.chain().focus().setImage({ src: url }).run();
+    if (url) {
+      setPendingImage(url);
     }
+  }, []);
+
+  const handleImageInserted = useCallback(() => {
+    setPendingImage(null);
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -122,6 +126,8 @@ export default function PostForm({ initialData }: PostFormProps) {
             content={content}
             onChange={setContent}
             onImageUpload={handleImageUploadForEditor}
+            imageToInsert={pendingImage}
+            onImageInserted={handleImageInserted}
           />
         </div>
 

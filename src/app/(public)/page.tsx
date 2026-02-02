@@ -4,20 +4,51 @@ import { prisma } from "@/lib/db";
 export const revalidate = 60;
 
 export default async function HomePage() {
-  const posts = await prisma.post.findMany({
-    where: { published: true },
-    orderBy: { createdAt: "desc" },
-    select: {
-      id: true,
-      title: true,
-      slug: true,
-      bannerUrl: true,
-      createdAt: true,
-    },
-  });
+  const [posts, settings] = await Promise.all([
+    prisma.post.findMany({
+      where: { published: true },
+      orderBy: { createdAt: "desc" },
+      select: {
+        id: true,
+        title: true,
+        slug: true,
+        bannerUrl: true,
+        createdAt: true,
+      },
+    }),
+    prisma.siteSettings.findUnique({
+      where: { id: "default" },
+    }),
+  ]);
+
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <h1 className="text-3xl font-bold text-text-primary mb-8">Latest Posts</h1>
+    <>
+      {settings?.bannerUrl && (
+        <div className="relative w-full h-64 md:h-80 lg:h-96 overflow-hidden">
+          <img
+            src={settings.bannerUrl}
+            alt="Site banner"
+            className="w-full h-full object-cover"
+          />
+          {(settings.bannerTitle || settings.bannerSubtitle) && (
+            <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-center px-4">
+              {settings.bannerTitle && (
+                <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-2">
+                  {settings.bannerTitle}
+                </h1>
+              )}
+              {settings.bannerSubtitle && (
+                <p className="text-lg md:text-xl text-white/90 max-w-2xl">
+                  {settings.bannerSubtitle}
+                </p>
+              )}
+            </div>
+          )}
+        </div>
+      )}
+
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <h2 className="text-3xl font-bold text-text-primary mb-8">Latest Posts</h2>
 
       {posts.length === 0 ? (
         <p className="text-text-muted text-center py-12">
@@ -74,6 +105,7 @@ export default async function HomePage() {
           ))}
         </div>
       )}
-    </div>
+      </div>
+    </>
   );
 }

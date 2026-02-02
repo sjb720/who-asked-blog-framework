@@ -5,15 +5,29 @@ import StarterKit from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
 import Link from "@tiptap/extension-link";
 import Placeholder from "@tiptap/extension-placeholder";
-import { useCallback } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
 interface EditorProps {
   content: string;
   onChange: (content: string) => void;
   onImageUpload?: () => void;
+  imageToInsert?: string | null;
+  onImageInserted?: () => void;
 }
 
-export default function Editor({ content, onChange, onImageUpload }: EditorProps) {
+export interface EditorRef {
+  insertImage: (url: string) => void;
+}
+
+export default function Editor({
+  content,
+  onChange,
+  onImageUpload,
+  imageToInsert,
+  onImageInserted,
+}: EditorProps) {
+  const hasInsertedRef = useRef(false);
+
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -42,6 +56,17 @@ export default function Editor({ content, onChange, onImageUpload }: EditorProps
       },
     },
   });
+
+  useEffect(() => {
+    if (imageToInsert && editor && !hasInsertedRef.current) {
+      hasInsertedRef.current = true;
+      editor.chain().focus().setImage({ src: imageToInsert }).run();
+      onImageInserted?.();
+    }
+    if (!imageToInsert) {
+      hasInsertedRef.current = false;
+    }
+  }, [imageToInsert, editor, onImageInserted]);
 
   const addImage = useCallback(() => {
     if (onImageUpload) {
@@ -189,10 +214,4 @@ export default function Editor({ content, onChange, onImageUpload }: EditorProps
       <EditorContent editor={editor} className="tiptap" />
     </div>
   );
-}
-
-export function insertImageToEditor(editor: ReturnType<typeof useEditor>, url: string) {
-  if (editor) {
-    editor.chain().focus().setImage({ src: url }).run();
-  }
 }
