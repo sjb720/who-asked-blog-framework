@@ -100,12 +100,12 @@ export default function GalleryUpload({ images, onChange }: GalleryUploadProps) 
               alt={image.caption || `Gallery image ${index + 1}`}
               className="w-full h-32 object-cover rounded-lg"
             />
-            <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center gap-2">
+            <div className="absolute inset-0 bg-bg-overlay opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center gap-2">
               {index > 0 && (
                 <button
                   type="button"
                   onClick={() => moveImage(index, "up")}
-                  className="p-1 bg-white rounded text-gray-700 hover:bg-gray-100"
+                  className="p-1 bg-bg-primary rounded text-text-secondary hover:bg-hover-bg"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -125,7 +125,7 @@ export default function GalleryUpload({ images, onChange }: GalleryUploadProps) 
                 <button
                   type="button"
                   onClick={() => moveImage(index, "down")}
-                  className="p-1 bg-white rounded text-gray-700 hover:bg-gray-100"
+                  className="p-1 bg-bg-primary rounded text-text-secondary hover:bg-hover-bg"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -144,7 +144,7 @@ export default function GalleryUpload({ images, onChange }: GalleryUploadProps) 
               <button
                 type="button"
                 onClick={() => handleRemove(index)}
-                className="p-1 bg-red-600 rounded text-white hover:bg-red-700"
+                className="p-1 bg-status-error rounded text-text-inverse hover:bg-status-error-hover"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -165,14 +165,14 @@ export default function GalleryUpload({ images, onChange }: GalleryUploadProps) 
               placeholder="Caption (optional)"
               value={image.caption || ""}
               onChange={(e) => handleCaptionChange(index, e.target.value)}
-              className="mt-2 w-full text-xs px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="mt-2 w-full text-xs px-2 py-1 border border-border-secondary rounded focus:outline-none focus:ring-1 focus:ring-focus-ring bg-bg-primary text-text-primary"
             />
           </div>
         ))}
-        <label className="flex flex-col items-center justify-center h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100">
+        <label className="flex flex-col items-center justify-center h-32 border-2 border-border-secondary border-dashed rounded-lg cursor-pointer bg-bg-secondary hover:bg-bg-tertiary">
           <div className="flex flex-col items-center justify-center">
             <svg
-              className="w-6 h-6 mb-2 text-gray-500"
+              className="w-6 h-6 mb-2 text-text-muted"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -186,7 +186,7 @@ export default function GalleryUpload({ images, onChange }: GalleryUploadProps) 
                 d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
               />
             </svg>
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-text-muted">
               {uploading ? "Uploading..." : "Add images"}
             </p>
           </div>

@@ -41,7 +41,7 @@ export default function Gallery({ images }: GalleryProps) {
           <button
             key={image.id}
             onClick={() => openLightbox(index)}
-            className="relative aspect-square overflow-hidden rounded-lg group focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="relative aspect-square overflow-hidden rounded-lg group focus:outline-none focus:ring-2 focus:ring-focus-ring"
           >
             <img
               src={image.url}
@@ -50,7 +50,7 @@ export default function Gallery({ images }: GalleryProps) {
             />
             {image.caption && (
               <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-3">
-                <p className="text-white text-sm truncate">{image.caption}</p>
+                <p className="text-text-inverse text-sm truncate">{image.caption}</p>
               </div>
             )}
           </button>
@@ -64,7 +64,7 @@ export default function Gallery({ images }: GalleryProps) {
         >
           <button
             onClick={closeLightbox}
-            className="absolute top-4 right-4 text-white hover:text-gray-300 z-10"
+            className="absolute top-4 right-4 text-text-inverse hover:text-text-disabled z-10"
           >
             <svg
               className="w-8 h-8"
@@ -86,7 +86,7 @@ export default function Gallery({ images }: GalleryProps) {
               e.stopPropagation();
               goToPrevious();
             }}
-            className="absolute left-4 text-white hover:text-gray-300 z-10"
+            className="absolute left-4 text-text-inverse hover:text-text-disabled z-10"
           >
             <svg
               className="w-10 h-10"
@@ -108,7 +108,7 @@ export default function Gallery({ images }: GalleryProps) {
               e.stopPropagation();
               goToNext();
             }}
-            className="absolute right-4 text-white hover:text-gray-300 z-10"
+            className="absolute right-4 text-text-inverse hover:text-text-disabled z-10"
           >
             <svg
               className="w-10 h-10"
@@ -135,11 +135,11 @@ export default function Gallery({ images }: GalleryProps) {
               className="max-w-full max-h-[85vh] object-contain"
             />
             {images[selectedIndex].caption && (
-              <p className="text-white text-center mt-4">
+              <p className="text-text-inverse text-center mt-4">
                 {images[selectedIndex].caption}
               </p>
             )}
-            <p className="text-gray-400 text-center text-sm mt-2">
+            <p className="text-text-placeholder text-center text-sm mt-2">
               {selectedIndex + 1} / {images.length}
             </p>
           </div>

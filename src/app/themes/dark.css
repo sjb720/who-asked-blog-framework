@@ -1,0 +1,66 @@
+:root {
+  /* Background colors */
+  --bg-primary: #111827;         /* gray-900 */
+  --bg-secondary: #1f2937;       /* gray-800 */
+  --bg-tertiary: #374151;        /* gray-700 */
+  --bg-muted: #4b5563;           /* gray-600 */
+  --bg-overlay: rgba(0, 0, 0, 0.7);
+
+  /* Text colors */
+  --text-primary: #f9fafb;       /* gray-50 */
+  --text-secondary: #e5e7eb;     /* gray-200 */
+  --text-muted: #9ca3af;         /* gray-400 */
+  --text-placeholder: #6b7280;   /* gray-500 */
+  --text-disabled: #4b5563;      /* gray-600 */
+  --text-inverse: #111827;       /* gray-900 */
+
+  /* Border colors */
+  --border-primary: #374151;     /* gray-700 */
+  --border-secondary: #4b5563;   /* gray-600 */
+  --border-focus: #60a5fa;       /* blue-400 */
+
+  /* Accent colors - Primary (Blue) */
+  --accent-primary: #3b82f6;     /* blue-500 */
+  --accent-primary-hover: #60a5fa; /* blue-400 */
+  --accent-primary-light: #93c5fd; /* blue-300 */
+  --accent-primary-dark: #2563eb; /* blue-600 */
+
+  /* Accent colors - Secondary (Light) */
+  --accent-secondary: #f9fafb;   /* gray-50 */
+  --accent-secondary-hover: #e5e7eb; /* gray-200 */
+
+  /* Status colors - Success */
+  --status-success-bg: #064e3b;  /* green-900 */
+  --status-success-text: #6ee7b7; /* green-300 */
+
+  /* Status colors - Warning */
+  --status-warning-bg: #78350f;  /* yellow-900 */
+  --status-warning-text: #fcd34d; /* yellow-300 */
+
+  /* Status colors - Error */
+  --status-error-bg: #450a0a;    /* red-950 */
+  --status-error-text: #fca5a5;  /* red-300 */
+  --status-error: #f87171;       /* red-400 */
+  --status-error-hover: #ef4444; /* red-500 */
+  --status-error-dark: #dc2626;  /* red-600 */
+
+  /* Interactive states */
+  --hover-bg: #374151;           /* gray-700 */
+  --active-bg: #4b5563;          /* gray-600 */
+  --focus-ring: #60a5fa;         /* blue-400 */
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+
+  /* Border radius */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-full: 9999px;
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-normal: 200ms ease;
+  --transition-slow: 300ms ease;
+}

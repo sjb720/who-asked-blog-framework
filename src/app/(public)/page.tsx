@@ -17,10 +17,10 @@ export default async function HomePage() {
   });
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <h1 className="text-3xl font-bold text-gray-900 mb-8">Latest Posts</h1>
+      <h1 className="text-3xl font-bold text-text-primary mb-8">Latest Posts</h1>
 
       {posts.length === 0 ? (
-        <p className="text-gray-500 text-center py-12">
+        <p className="text-text-muted text-center py-12">
           No posts yet. Check back soon!
         </p>
       ) : (
@@ -31,7 +31,7 @@ export default async function HomePage() {
               href={`/posts/${post.slug}`}
               className="group block"
             >
-              <article className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+              <article className="bg-bg-primary rounded-lg overflow-hidden shadow-sm border border-border-primary hover:shadow-md transition-shadow">
                 {post.bannerUrl ? (
                   <div className="aspect-video overflow-hidden">
                     <img
@@ -41,9 +41,9 @@ export default async function HomePage() {
                     />
                   </div>
                 ) : (
-                  <div className="aspect-video bg-gray-100 flex items-center justify-center">
+                  <div className="aspect-video bg-bg-tertiary flex items-center justify-center">
                     <svg
-                      className="w-12 h-12 text-gray-300"
+                      className="w-12 h-12 text-text-disabled"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -58,10 +58,10 @@ export default async function HomePage() {
                   </div>
                 )}
                 <div className="p-4">
-                  <h2 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-2">
+                  <h2 className="text-lg font-semibold text-text-primary group-hover:text-accent-primary transition-colors line-clamp-2">
                     {post.title}
                   </h2>
-                  <time className="text-sm text-gray-500 mt-2 block">
+                  <time className="text-sm text-text-muted mt-2 block">
                     {new Date(post.createdAt).toLocaleDateString("en-US", {
                       year: "numeric",
                       month: "long",

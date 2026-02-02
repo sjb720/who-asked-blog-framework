@@ -90,7 +90,7 @@ export default function PostForm({ initialData }: PostFormProps) {
     <>
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-text-secondary mb-1">
             Title
           </label>
           <input
@@ -98,13 +98,13 @@ export default function PostForm({ initialData }: PostFormProps) {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             required
-            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-3 py-2 border border-border-secondary rounded-md shadow-sm focus:outline-none focus:ring-border-focus focus:border-border-focus bg-bg-primary text-text-primary"
             placeholder="Post title"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-text-secondary mb-1">
             Banner Image
           </label>
           <ImageUpload
@@ -115,7 +115,7 @@ export default function PostForm({ initialData }: PostFormProps) {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-text-secondary mb-1">
             Content
           </label>
           <Editor
@@ -126,7 +126,7 @@ export default function PostForm({ initialData }: PostFormProps) {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-text-secondary mb-1">
             Gallery Images
           </label>
           <GalleryUpload images={images} onChange={setImages} />
@@ -138,9 +138,9 @@ export default function PostForm({ initialData }: PostFormProps) {
             id="published"
             checked={published}
             onChange={(e) => setPublished(e.target.checked)}
-            className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+            className="h-4 w-4 text-accent-primary focus:ring-focus-ring border-border-secondary rounded"
           />
-          <label htmlFor="published" className="ml-2 block text-sm text-gray-900">
+          <label htmlFor="published" className="ml-2 block text-sm text-text-primary">
             Published
           </label>
         </div>
@@ -149,14 +149,14 @@ export default function PostForm({ initialData }: PostFormProps) {
           <button
             type="button"
             onClick={() => router.push("/admin")}
-            className="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+            className="px-4 py-2 border border-border-secondary rounded-md shadow-sm text-sm font-medium text-text-secondary bg-bg-primary hover:bg-hover-bg"
           >
             Cancel
           </button>
           <button
             type="submit"
             disabled={saving}
-            className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-50"
+            className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-text-inverse bg-accent-primary hover:bg-accent-primary-hover disabled:opacity-50"
           >
             {saving ? "Saving..." : initialData ? "Update" : "Create"}
           </button>
@@ -164,9 +164,9 @@ export default function PostForm({ initialData }: PostFormProps) {
       </form>
 
       {showImageModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
-            <h3 className="text-lg font-medium text-gray-900 mb-4">
+        <div className="fixed inset-0 bg-bg-overlay flex items-center justify-center z-50">
+          <div className="bg-bg-primary rounded-lg p-6 max-w-md w-full mx-4">
+            <h3 className="text-lg font-medium text-text-primary mb-4">
               Insert Image
             </h3>
             <ImageUpload
@@ -176,7 +176,7 @@ export default function PostForm({ initialData }: PostFormProps) {
             <button
               type="button"
               onClick={() => setShowImageModal(false)}
-              className="mt-4 w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+              className="mt-4 w-full px-4 py-2 border border-border-secondary rounded-md shadow-sm text-sm font-medium text-text-secondary bg-bg-primary hover:bg-hover-bg"
             >
               Cancel
             </button>

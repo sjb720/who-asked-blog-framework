@@ -1,27 +1,35 @@
+@import "./themes/light.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /* TipTap Editor Styles */
 .tiptap {
-  @apply outline-none min-h-[300px];
+  @apply outline-none min-h-[300px] p-4;
+  background: var(--bg-primary);
+  color: var(--text-primary);
 }
 
 .tiptap p.is-editor-empty:first-child::before {
-  @apply text-gray-400 float-left h-0 pointer-events-none;
+  @apply float-left h-0 pointer-events-none;
+  color: var(--text-placeholder);
   content: attr(data-placeholder);
 }
 
 .tiptap h1 {
   @apply text-3xl font-bold mt-6 mb-4;
+  color: var(--text-primary);
 }
 
 .tiptap h2 {
   @apply text-2xl font-bold mt-5 mb-3;
+  color: var(--text-primary);
 }
 
 .tiptap h3 {
   @apply text-xl font-bold mt-4 mb-2;
+  color: var(--text-primary);
 }
 
 .tiptap p {
@@ -41,23 +49,33 @@
 }
 
 .tiptap blockquote {
-  @apply border-l-4 border-gray-300 pl-4 italic my-4;
+  @apply border-l-4 pl-4 italic my-4;
+  border-color: var(--border-secondary);
 }
 
 .tiptap code {
-  @apply bg-gray-100 rounded px-1 py-0.5 font-mono text-sm;
+  @apply rounded px-1 py-0.5 font-mono text-sm;
+  background: var(--bg-tertiary);
 }
 
 .tiptap pre {
-  @apply bg-gray-900 text-gray-100 rounded-lg p-4 my-4 overflow-x-auto;
+  @apply rounded-lg p-4 my-4 overflow-x-auto;
+  background: var(--accent-secondary);
+  color: var(--text-inverse);
 }
 
 .tiptap pre code {
-  @apply bg-transparent p-0;
+  @apply p-0;
+  background: transparent;
 }
 
 .tiptap a {
-  @apply text-blue-600 underline hover:text-blue-800;
+  @apply underline;
+  color: var(--accent-primary);
+}
+
+.tiptap a:hover {
+  color: var(--accent-primary-hover);
 }
 
 .tiptap img {
@@ -65,20 +83,28 @@
 }
 
 .tiptap hr {
-  @apply my-6 border-gray-300;
+  @apply my-6;
+  border-color: var(--border-secondary);
 }
 
 /* Post content styles (for public view) */
+.post-content {
+  color: var(--text-primary);
+}
+
 .post-content h1 {
   @apply text-3xl font-bold mt-6 mb-4;
+  color: var(--text-primary);
 }
 
 .post-content h2 {
   @apply text-2xl font-bold mt-5 mb-3;
+  color: var(--text-primary);
 }
 
 .post-content h3 {
   @apply text-xl font-bold mt-4 mb-2;
+  color: var(--text-primary);
 }
 
 .post-content p {
@@ -98,23 +124,34 @@
 }
 
 .post-content blockquote {
-  @apply border-l-4 border-gray-300 pl-4 italic my-4 text-gray-600;
+  @apply border-l-4 pl-4 italic my-4;
+  border-color: var(--border-secondary);
+  color: var(--text-muted);
 }
 
 .post-content code {
-  @apply bg-gray-100 rounded px-1 py-0.5 font-mono text-sm;
+  @apply rounded px-1 py-0.5 font-mono text-sm;
+  background: var(--bg-tertiary);
 }
 
 .post-content pre {
-  @apply bg-gray-900 text-gray-100 rounded-lg p-4 my-4 overflow-x-auto;
+  @apply rounded-lg p-4 my-4 overflow-x-auto;
+  background: var(--accent-secondary);
+  color: var(--text-inverse);
 }
 
 .post-content pre code {
-  @apply bg-transparent p-0;
+  @apply p-0;
+  background: transparent;
 }
 
 .post-content a {
-  @apply text-blue-600 underline hover:text-blue-800;
+  @apply underline;
+  color: var(--accent-primary);
+}
+
+.post-content a:hover {
+  color: var(--accent-primary-hover);
 }
 
 .post-content img {
@@ -122,5 +159,6 @@
 }
 
 .post-content hr {
-  @apply my-6 border-gray-300;
+  @apply my-6;
+  border-color: var(--border-secondary);
 }

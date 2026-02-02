@@ -12,14 +12,14 @@ export default function AdminLayout({
   const pathname = usePathname();
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <nav className="bg-white shadow-sm">
+    <div className="min-h-screen bg-bg-secondary">
+      <nav className="bg-bg-primary shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex">
               <Link
                 href="/admin"
-                className="flex items-center px-2 text-xl font-semibold text-gray-900"
+                className="flex items-center px-2 text-xl font-semibold text-text-primary"
               >
                 Admin
               </Link>
@@ -28,8 +28,8 @@ export default function AdminLayout({
                   href="/admin"
                   className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
                     pathname === "/admin"
-                      ? "border-blue-500 text-gray-900"
-                      : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                      ? "border-accent-primary text-text-primary"
+                      : "border-transparent text-text-muted hover:border-border-secondary hover:text-text-secondary"
                   }`}
                 >
                   Posts
@@ -39,13 +39,13 @@ export default function AdminLayout({
             <div className="flex items-center space-x-4">
               <Link
                 href="/"
-                className="text-sm text-gray-500 hover:text-gray-700"
+                className="text-sm text-text-muted hover:text-text-secondary"
               >
                 View Site
               </Link>
               <button
                 onClick={() => signOut({ callbackUrl: "/login" })}
-                className="text-sm text-gray-500 hover:text-gray-700"
+                className="text-sm text-text-muted hover:text-text-secondary"
               >
                 Sign Out
               </button>
