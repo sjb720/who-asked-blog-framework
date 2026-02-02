@@ -4,6 +4,7 @@ import {
   DeleteObjectCommand,
   CreateBucketCommand,
   HeadBucketCommand,
+  PutBucketPolicyCommand,
 } from "@aws-sdk/client-s3";
 
 const s3Client = new S3Client({
@@ -24,11 +25,38 @@ let bucketChecked = false;
 async function ensureBucket() {
   if (bucketChecked) return;
 
+  console.log("Checking bucket:", bucket, "at endpoint:", process.env.S3_ENDPOINT);
+
   try {
     await s3Client.send(new HeadBucketCommand({ Bucket: bucket }));
+    console.log("Bucket exists");
   } catch (error: any) {
+    console.log("Bucket check error:", error.name, error.message);
     if (error.name === "NotFound" || error.$metadata?.httpStatusCode === 404) {
+      console.log("Creating bucket:", bucket);
       await s3Client.send(new CreateBucketCommand({ Bucket: bucket }));
+
+      // Set public read policy
+      const policy = {
+        Version: "2012-10-17",
+        Statement: [
+          {
+            Effect: "Allow",
+            Principal: "*",
+            Action: ["s3:GetObject"],
+            Resource: [`arn:aws:s3:::${bucket}/*`],
+          },
+        ],
+      };
+      await s3Client.send(
+        new PutBucketPolicyCommand({
+          Bucket: bucket,
+          Policy: JSON.stringify(policy),
+        })
+      );
+      console.log("Bucket policy set to public read");
+    } else {
+      throw error;
     }
   }
 

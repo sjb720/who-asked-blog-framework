@@ -3,6 +3,7 @@
 import { useState, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
+import { useSnackbar } from "notistack";
 import ImageUpload from "./ImageUpload";
 import GalleryUpload from "./GalleryUpload";
 
@@ -28,6 +29,7 @@ interface PostFormProps {
 
 export default function PostForm({ initialData }: PostFormProps) {
   const router = useRouter();
+  const { enqueueSnackbar } = useSnackbar();
   const [title, setTitle] = useState(initialData?.title || "");
   const [content, setContent] = useState(initialData?.content || "");
   const [bannerUrl, setBannerUrl] = useState(initialData?.bannerUrl || "");
@@ -79,7 +81,7 @@ export default function PostForm({ initialData }: PostFormProps) {
       router.refresh();
     } else {
       const error = await res.json();
-      alert(error.error || "Failed to save post");
+      enqueueSnackbar(error.error || "Failed to save post", { variant: "error" });
       setSaving(false);
     }
   };

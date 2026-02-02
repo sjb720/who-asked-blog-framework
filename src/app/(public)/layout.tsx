@@ -1,10 +1,14 @@
 import Link from "next/link";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 
-export default function PublicLayout({
+export default async function PublicLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const session = await getServerSession(authOptions);
+
   return (
     <div className="min-h-screen bg-white">
       <nav className="border-b border-gray-200">
@@ -15,6 +19,16 @@ export default function PublicLayout({
                 Blog
               </Link>
             </div>
+            {session && (
+              <div className="flex items-center">
+                <Link
+                  href="/admin"
+                  className="px-4 py-2 bg-gray-900 text-white text-sm font-medium rounded-md hover:bg-gray-800 transition-colors"
+                >
+                  Admin Console
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </nav>

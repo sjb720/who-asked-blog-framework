@@ -34,7 +34,15 @@ export async function POST(request: NextRequest) {
   }
 
   const buffer = Buffer.from(await file.arrayBuffer());
-  const url = await uploadFile(buffer, file.name, file.type);
 
-  return NextResponse.json({ url });
+  try {
+    const url = await uploadFile(buffer, file.name, file.type);
+    return NextResponse.json({ url });
+  } catch (error) {
+    console.error("Upload error:", error);
+    return NextResponse.json(
+      { error: "Failed to upload file to storage" },
+      { status: 500 }
+    );
+  }
 }

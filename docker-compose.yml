@@ -15,21 +15,20 @@ services:
     depends_on:
       db:
         condition: service_healthy
-      rustfs:
+      minio:
         condition: service_started
 
-  rustfs:
-    image: rustfs/rustfs:latest
+  minio:
+    image: minio/minio:latest
     ports:
       - "9000:9000"
       - "9001:9001"
     environment:
-      - RUSTFS_ROOT_USER=${RUSTFS_ROOT_USER}
-      - RUSTFS_ROOT_PASSWORD=${RUSTFS_ROOT_PASSWORD}
+      - MINIO_ROOT_USER=${S3_ACCESS_KEY}
+      - MINIO_ROOT_PASSWORD=${S3_SECRET_KEY}
     volumes:
-      - rustfs-data:/data
-      - rustfs-logs:/logs
-    user: "10001:10001"
+      - minio-data:/data
+    command: server /data --console-address ":9001"
 
   db:
     image: postgres:16-alpine
@@ -48,6 +47,5 @@ services:
       retries: 5
 
 volumes:
-  rustfs-data:
-  rustfs-logs:
+  minio-data:
   pgdata:

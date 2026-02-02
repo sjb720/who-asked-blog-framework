@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useState } from "react";
+import { useSnackbar } from "notistack";
 
 interface ImageUploadProps {
   onUpload: (url: string) => void;
@@ -13,6 +14,7 @@ export default function ImageUpload({
   label = "Upload Image",
   currentImage,
 }: ImageUploadProps) {
+  const { enqueueSnackbar } = useSnackbar();
   const [uploading, setUploading] = useState(false);
   const [preview, setPreview] = useState<string | null>(currentImage || null);
 
@@ -34,7 +36,7 @@ export default function ImageUpload({
 
         if (!res.ok) {
           const error = await res.json();
-          alert(error.error || "Upload failed");
+          enqueueSnackbar(error.error || "Upload failed", { variant: "error" });
           return;
         }
 
@@ -42,7 +44,7 @@ export default function ImageUpload({
         setPreview(url);
         onUpload(url);
       } catch (error) {
-        alert("Upload failed");
+        enqueueSnackbar("Upload failed", { variant: "error" });
       } finally {
         setUploading(false);
       }
