@@ -39,7 +39,7 @@ services:
       start_period: 40s
     labels:
       - traefik.enable=true
-      - traefik.http.routers.web.rule=Host(`s14hpoix47frkpvsejcd1j4b.178.105.51.235.sslip.io`)
+      - traefik.http.routers.web.rule=Host(`whoasked.blog`)
       - traefik.http.routers.web.entrypoints=https
       - traefik.http.routers.web.tls.certresolver=letsencrypt
       - traefik.http.services.web.loadbalancer.server.port=3000
