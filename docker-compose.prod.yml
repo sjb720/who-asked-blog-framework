@@ -5,6 +5,9 @@ services:
       dockerfile: Dockerfile
     expose:
       - 3000
+    networks:
+      - default
+      - coolify
     environment:
       - DATABASE_URL=${DATABASE_URL}
       - S3_ENDPOINT=${S3_ENDPOINT}
@@ -84,3 +87,7 @@ volumes:
     name: whoaskedblog_minio_data
   pgdata:
     name: whoaskedblog_pgdata
+
+networks:
+  coolify:
+    external: true
