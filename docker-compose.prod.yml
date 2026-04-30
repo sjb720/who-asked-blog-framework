@@ -4,19 +4,19 @@ services:
       context: .
       dockerfile: Dockerfile
     expose:
-      - '3000'
+      - 3000
     environment:
-      - 'DATABASE_URL=${DATABASE_URL}'
-      - 'S3_ENDPOINT=${S3_ENDPOINT}'
-      - 'S3_ACCESS_KEY=${S3_ACCESS_KEY}'
-      - 'S3_SECRET_KEY=${S3_SECRET_KEY}'
-      - 'S3_BUCKET=${S3_BUCKET}'
-      - 'S3_PUBLIC_URL=${S3_PUBLIC_URL}'
+      - DATABASE_URL=${DATABASE_URL}
+      - S3_ENDPOINT=${S3_ENDPOINT}
+      - S3_ACCESS_KEY=${S3_ACCESS_KEY}
+      - S3_SECRET_KEY=${S3_SECRET_KEY}
+      - S3_BUCKET=${S3_BUCKET}
+      - S3_PUBLIC_URL=${S3_PUBLIC_URL}
       - IMAGE_PROXY_URL=/api/images
-      - 'NEXTAUTH_URL=${NEXTAUTH_URL}'
-      - 'NEXTAUTH_SECRET=${NEXTAUTH_SECRET}'
-      - 'ADMIN_EMAIL=${ADMIN_EMAIL}'
-      - 'ADMIN_PASSWORD=${ADMIN_PASSWORD}'
+      - NEXTAUTH_URL=${NEXTAUTH_URL}
+      - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
+      - ADMIN_EMAIL=${ADMIN_EMAIL}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
     depends_on:
       db:
         condition: service_healthy
@@ -27,26 +27,28 @@ services:
       test:
         - CMD
         - wget
-        - '-q'
-        - '--spider'
-        - 'http://localhost:3000/api/health'
+        - -q
+        - --spider
+        - http://localhost:3000/api/health
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 40s
     labels:
-      - coolify.managed=true
-      - coolify.type=application
-      - coolify.port=3000
+      - traefik.enable=true
+      - traefik.http.routers.web.rule=Host(`s14hpoix47frkpvsejcd1j4b.178.105.51.235.sslip.io`)
+      - traefik.http.routers.web.entrypoints=https
+      - traefik.http.routers.web.tls.certresolver=letsencrypt
+      - traefik.http.services.web.loadbalancer.server.port=3000
 
   minio:
-    image: 'minio/minio:latest'
+    image: minio/minio:latest
     environment:
-      - 'MINIO_ROOT_USER=${S3_ACCESS_KEY}'
-      - 'MINIO_ROOT_PASSWORD=${S3_SECRET_KEY}'
+      - MINIO_ROOT_USER=${S3_ACCESS_KEY}
+      - MINIO_ROOT_PASSWORD=${S3_SECRET_KEY}
     volumes:
-      - 'minio-data:/data'
-    command: 'server /data --console-address ":9001"'
+      - minio-data:/data
+    command: server /data --console-address ":9001"
     restart: unless-stopped
     healthcheck:
       test:
@@ -60,18 +62,18 @@ services:
       start_period: 10s
 
   db:
-    image: 'postgres:16-alpine'
+    image: postgres:16-alpine
     environment:
-      - 'POSTGRES_USER=${POSTGRES_USER}'
-      - 'POSTGRES_PASSWORD=${POSTGRES_PASSWORD}'
-      - 'POSTGRES_DB=${POSTGRES_DB}'
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
     volumes:
-      - 'pgdata:/var/lib/postgresql/data'
+      - pgdata:/var/lib/postgresql/data
     restart: unless-stopped
     healthcheck:
       test:
         - CMD-SHELL
-        - 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}'
+        - pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}
       interval: 10s
       timeout: 5s
       retries: 5
