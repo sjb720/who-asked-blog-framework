@@ -74,18 +74,37 @@ export default function PostForm({ initialData }: PostFormProps) {
       : "/api/posts";
     const method = initialData ? "PUT" : "POST";
 
-    const res = await fetch(url, {
-      method,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
+    try {
+      const res = await fetch(url, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
 
-    if (res.ok) {
-      router.push("/admin");
-      router.refresh();
-    } else {
-      const error = await res.json();
-      enqueueSnackbar(error.error || "Failed to save post", { variant: "error" });
+      if (res.ok) {
+        // Deliberately leave `saving` set so the button stays disabled while
+        // we navigate away, rather than flashing back to "Create".
+        router.push("/admin");
+        router.refresh();
+        return;
+      }
+
+      // An error response is not guaranteed to be JSON — a proxy 502 or an
+      // unhandled server error returns HTML, and res.json() would throw.
+      const message = await res
+        .json()
+        .then((body) => body?.error)
+        .catch(() => null);
+
+      enqueueSnackbar(message || `Failed to save post (HTTP ${res.status})`, {
+        variant: "error",
+      });
+      setSaving(false);
+    } catch (err) {
+      console.error("Failed to save post:", err);
+      enqueueSnackbar("Network error — could not reach the server.", {
+        variant: "error",
+      });
       setSaving(false);
     }
   };

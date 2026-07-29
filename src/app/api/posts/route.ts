@@ -8,8 +8,18 @@ import { slugify } from "@/lib/utils";
 const createPostSchema = z.object({
   title: z.string().min(1).max(255),
   content: z.string(),
-  bannerUrl: z.string().optional(),
+  bannerUrl: z.string().nullable().optional(),
   published: z.boolean().default(false),
+  images: z
+    .array(
+      z.object({
+        id: z.string().optional(),
+        url: z.string(),
+        caption: z.string().optional(),
+        sortOrder: z.number(),
+      })
+    )
+    .optional(),
 });
 
 export async function GET(request: NextRequest) {
@@ -46,25 +56,52 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const { title, content, bannerUrl, published } = parsed.data;
+  const { title, content, bannerUrl, published, images } = parsed.data;
 
-  let slug = slugify(title);
+  // A title made only of symbols/emoji slugifies to "", which would produce a
+  // post that is unreachable at /posts/<slug>.
+  const baseSlug = slugify(title) || "post";
+  let slug = baseSlug;
   let counter = 1;
 
   while (await prisma.post.findUnique({ where: { slug } })) {
-    slug = `${slugify(title)}-${counter}`;
+    slug = `${baseSlug}-${counter}`;
     counter++;
   }
 
-  const post = await prisma.post.create({
-    data: {
-      title,
-      slug,
-      content,
-      bannerUrl,
-      published,
-    },
-  });
+  try {
+    const post = await prisma.post.create({
+      data: {
+        title,
+        slug,
+        content,
+        bannerUrl,
+        published,
+        ...(images?.length && {
+          images: {
+            create: images.map((img) => ({
+              url: img.url,
+              caption: img.caption || null,
+              sortOrder: img.sortOrder,
+            })),
+          },
+        }),
+      },
+      include: {
+        images: {
+          orderBy: { sortOrder: "asc" },
+        },
+      },
+    });
 
-  return NextResponse.json(post, { status: 201 });
+    return NextResponse.json(post, { status: 201 });
+  } catch (error) {
+    // Without this the route throws an HTML error page, which the client then
+    // fails to parse as JSON — surfacing as an unhandled promise rejection.
+    console.error("Failed to create post:", error);
+    return NextResponse.json(
+      { error: "Failed to create post" },
+      { status: 500 }
+    );
+  }
 }
