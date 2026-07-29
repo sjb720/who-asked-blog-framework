@@ -16,19 +16,36 @@ export default function LoginPage() {
     setError("");
     setLoading(true);
 
-    const result = await signIn("credentials", {
-      email,
-      password,
-      redirect: false,
-    });
+    try {
+      const result = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+      });
 
-    setLoading(false);
+      if (!result) {
+        setError("Could not reach the sign in service. Please try again.");
+        return;
+      }
 
-    if (result?.error) {
-      setError("Invalid email or password");
-    } else {
+      if (result.error) {
+        setError(
+          result.error === "CredentialsSignin"
+            ? "Invalid email or password"
+            : "Sign in failed. Please try again later."
+        );
+        return;
+      }
+
       router.push("/admin");
       router.refresh();
+    } catch (err) {
+      // signIn() throws when the auth endpoint returns something it cannot
+      // parse as a sign in result — e.g. a 500 from a server misconfiguration.
+      console.error("Sign in request failed:", err);
+      setError("Sign in failed. Please try again later.");
+    } finally {
+      setLoading(false);
     }
   };
 
